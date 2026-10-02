@@ -1,12 +1,11 @@
 class Parquimetro {
     #valorPago;
 
-    // Tabela de tarifas
+    // Tabela de tarifas (em ordem crescente de valor)
     #tarifas = [
         { valor: 1.00, tempo: 30 },
-        { valor: 1.50, tempo: 60 },
-        { valor: 1.75, tempo: 90 },
-        { valor: 2.00, tempo: 120 }
+        { valor: 1.75, tempo: 60 },
+        { valor: 3.00, tempo: 120 }
     ];
 
     constructor(valorPago) {
@@ -14,10 +13,12 @@ class Parquimetro {
     }
 
     calcular() {
-        if (this.#valorPago < 1) {
+        const valorMinimo = this.#tarifas[0].valor;
+
+        if (this.#valorPago < valorMinimo) {
             return {
                 suficiente: false,
-                mensagem: "Valor insuficiente. O valor mínimo é R$ 1,00."
+                mensagem: `Valor insuficiente. O valor mínimo é R$ ${valorMinimo.toFixed(2).replace(".", ",")}.`
             };
         }
 
@@ -30,6 +31,7 @@ class Parquimetro {
             }
         }
 
+        // Troco = valor pago - tarifa da faixa escolhida
         const troco = this.#valorPago - tarifaEscolhida.valor;
 
         return {
